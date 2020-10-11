@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: beat-manual-config
+  namespace: default
+data:
+  filebeat.yml: |
+    filebeat.inputs:
+     - type: log
+       paths:
+        - /tmp/output.log
+     
+    output:
+      logstash:
+        hosts: [ "10.128.0.2:31416" ]

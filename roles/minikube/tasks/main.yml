@@ -1,0 +1,15 @@
+---
+#- name: ensure minikube is installed
+#  command: minikube version
+#  register: minikube_package
+
+- name: install package
+  become: yes
+  package:
+    name: minikube
+    state: present
+
+- name: Ensure minikube is up and running
+  command: minikube version
+  register: minikube_version
+  
