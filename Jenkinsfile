@@ -15,7 +15,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'echo "Deploy Stage"'
+        sh 'ansible-playbook -vvvv main.yaml'
       }
      }
 }
