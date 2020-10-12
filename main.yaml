@@ -2,7 +2,7 @@
 - hosts: localhost
   roles:
      - minikube
-#     - elastic
+     - elastic
 #     - logstash
 #     - kibana
     

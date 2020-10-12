@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+spec:
+  selector:
+    matchLabels:
+      component: elasticsearch
+  template:
+    metadata:
+      labels:
+        component: elasticsearch
+    spec:
+      containers:
+        - name: elasticsearch
+          image: elasticsearch:7.8.0
+          env:
+            - name: discovery.type
+              value: single-node
+          ports:
+            - containerPort: 9200
+              name: elastic
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /_cluster/health
+            initialDelaySeconds: 40
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /_cluster/health
+              port: http
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          volumeMounts:
+            - name: elastic-config 
+              mountPath: /usr/share/elasticsearch/config
+              subPath: elasticsearch.yml
+            - name: log4j-props
+              mountPath: /usr/share/elasticsearch/config
+              subPath: log4j2.properties
+      volumes:
+        - name: elastic-config
+          configMap:
+            name: elastic-config
+        - name: log4j-props
+          configMap:
+            name: log4j-props

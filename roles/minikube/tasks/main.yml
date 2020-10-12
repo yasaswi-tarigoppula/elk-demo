@@ -12,4 +12,4 @@
 - name: Ensure minikube is up and running
   command: minikube version
   register: minikube_version
-  
+  #  failed_when: minikube_version.rc != 0  
