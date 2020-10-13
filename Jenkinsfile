@@ -15,7 +15,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'ansible-playbook -vvvv main.yaml'
+        sh 'ansible-playbook -vvvv main.yaml --ask-become-pass'
       }
      }
 }
