@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: elasticsearch
+  annotations:
+    configmap.reloader.stakater.com/reload: "elastic-config"
 spec:
   selector:
     matchLabels:
@@ -22,27 +24,29 @@ spec:
               name: elastic
           livenessProbe:
             httpGet:
-              port: http
+              port: elastic
               path: /_cluster/health
             initialDelaySeconds: 40
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /_cluster/health
-              port: http
+              port: elastic
             initialDelaySeconds: 30
             timeoutSeconds: 10
+          resources:
+            requests:
+              memory: 4Gi
+              cpu: 0.5
+            limits:
+              memory: 4Gi
+              cpu: 2
           volumeMounts:
             - name: elastic-config 
-              mountPath: /usr/share/elasticsearch/config
+              mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
               subPath: elasticsearch.yml
-            - name: log4j-props
-              mountPath: /usr/share/elasticsearch/config
-              subPath: log4j2.properties
       volumes:
         - name: elastic-config
           configMap:
             name: elastic-config
-        - name: log4j-props
-          configMap:
-            name: log4j-props
+

@@ -12,4 +12,4 @@ data:
      
     output:
       logstash:
-        hosts: [ "10.128.0.2:31416" ]
+        hosts: [ "{{ minikube_ip }}:{{ logstash_nodeport }}" ]

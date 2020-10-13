@@ -5,21 +5,27 @@ metadata:
 spec:
   selector:
     matchLabels:
-      run: kibana
+      component: kibana
   template:
     metadata:
       labels:
-        run: kibana
+        component: kibana
     spec:
       containers:
       - name: kibana
-        image: docker.elastic.co/kibana/kibana:6.2.1
+        image: kibana:7.8.0
         env:
           - name: ELASTICSEARCH_URL
-            value: http://elasticsearch:9200
+            value: http://elasticsearch:{{ elastic_nodeport }}
           - name: XPACK_SECURITY_ENABLED
             value: "true"
         ports:
           - containerPort: 5601
-            name: http
-            protocol: TCP
+            name: kibana
+        resources:
+          requests:
+            memory: 1Gi
+            cpu: 0.5
+          limits:
+            memory: 2Gi
+            cpu: 2

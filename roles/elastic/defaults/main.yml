@@ -3,5 +3,6 @@
 elastic_config:
     - elastic_configmap.yml
     - elastic_deployment.yml
-    - elastic_log4j_configmap.yml
-    - elastic_service.yml        
+    - elastic_service.yml
+
+elastic_nodeport: 30017

@@ -3,6 +3,7 @@
   roles:
      - minikube
      - elastic
-#     - logstash
-#     - kibana
+     - logstash
+     - kibana
+     - filebeat
     

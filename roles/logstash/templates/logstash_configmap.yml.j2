@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: log-manual-pipeline
+  name: logstash-pipeline
   namespace: default
 data:
   logstash.conf: |
@@ -13,7 +13,7 @@ data:
      
     output {
       elasticsearch {
-        hosts => ["http://10.128.0.2:31455"]
+        hosts => ["http://{{ minikube_ip }}:{{ elastic_nodeport }}"]
         index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
       }
       stdout {

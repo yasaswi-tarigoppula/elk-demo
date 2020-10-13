@@ -1,18 +1,20 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: logging-app-manual
+  name: logging-app
+  annotations:
+    configmap.reloader.stakater.com/reload: "beat-manual-config"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: logging-app-manual
+      name: logging-app
   template:
     metadata:
       labels:
-        name: logging-app-manual
+        name: logging-app
     spec:
-      hostname: logging-app-manual
+      hostname: logging-app
       containers:
         - name: beat-manual
           image: elastic/filebeat:7.8.0
@@ -25,7 +27,7 @@ spec:
               mountPath: /etc/filebeat/
             - name: manual-log-directory
               mountPath: /tmp/
-        - name: logging-app-manual
+        - name: logging-app
           image: sladesoftware/log-application:latest
           volumeMounts:
             - name: manual-log-directory

@@ -3,12 +3,13 @@ kind: Service
 metadata:
   name: kibana
   labels:
-    run: kibana
+    component: kibana
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
-    run: kibana
+    component: kibana
   ports:
-    - name: http
+    - name: kibana
       port: 5601
-      protocol: TCP
+      nodePort: 30101
+

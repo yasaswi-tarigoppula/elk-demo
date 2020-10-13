@@ -1,0 +1,8 @@
+---
+
+logstash_config:
+    - logstash_configmap.yml
+    - logstash_deployment.yml
+    - logstash_service.yml 
+
+logstash_nodeport: 31000

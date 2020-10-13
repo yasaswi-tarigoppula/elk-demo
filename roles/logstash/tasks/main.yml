@@ -1,3 +1,4 @@
+
 ---
 - name: Creates /opt/elk/k8s/ directory
   become: yes
@@ -12,32 +13,15 @@
     src: "{{ item }}.j2"
     dest: "/opt/elk/k8s/{{ item }}"
   with_items:
-    - "{{ elastic_config }}"
+    - "{{ logstash_config }}"
 
-- name: Initiate elastic configmap
+- name: Initiate logstash configmap
   become: yes
   shell: "kubectl apply -f /opt/elk/k8s/{{ item }}"
   with_items: 
-    - "{{ elastic_config }}"
+    - "{{ logstash_config }}"
 
 - name: wait for pods to come up
   shell: kubectl get pods -o json
   register: kubectl_get_pods
   until: kubectl_get_pods.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]
-  delay: 10
-  retries: 5
-
-#- name: Ensure running application
-#  community.kubernetes.k8s_info:
-#    namespace: default
-#    kind: Pod
-#    label_selectors:
-#      - component=elasticsearch
-#  register: pod_list
-#  #  until: pod_list.resources[0].status.phase == 'Running'
-#  delay: 10
-#  retries: 3
-#
-#- name: Debug info
-#  debug:
-#     msg: "{{ pod_list }}"

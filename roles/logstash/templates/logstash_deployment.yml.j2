@@ -2,32 +2,34 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: log-manual
+  name: logstash
+  annotations:
+    configmap.reloader.stakater.com/reload: "logstash-pipeline"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: log-manual
+      component: logstash
   template:
     metadata:
       labels:
-        name: log-manual
+        component: logstash
     spec:
       containers:
-       - name: log-manual
+       - name: logstash
          ports:
          - containerPort: 5044
-           name: filebeat
-         image: logstash:7.8.0
+           name: logstash
+         image: elastic/logstash:7.8.0
          volumeMounts:
-         - name: log-manual-pipeline
+         - name: logstash-pipeline
            mountPath: /usr/share/logstash/pipeline/
          command:
          - logstash
       volumes:
-       - name: log-manual-pipeline
+       - name: logstash-pipeline
          configMap:
-           name: log-manual-pipeline
+           name: logstash-pipeline
            items:
            - key: logstash.conf
              path: logstash.conf

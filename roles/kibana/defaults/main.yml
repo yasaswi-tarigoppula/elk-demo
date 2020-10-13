@@ -1,0 +1,4 @@
+---
+kibana_config:
+    - kibana_service.yaml
+    - kibana_deployment.yaml

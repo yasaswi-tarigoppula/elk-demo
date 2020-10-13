@@ -3,13 +3,44 @@
 #  command: minikube version
 #  register: minikube_package
 
+- name: Ensure minikube is up and running
+  command: minikube version
+  register: minikube_version
+  ignore_errors: true
+
 - name: install package
   become: yes
   package:
     name: minikube
     state: present
+  when: minikube_version.rc != "0"
 
-- name: Ensure minikube is up and running
-  command: minikube version
-  register: minikube_version
-  #  failed_when: minikube_version.rc != 0  
+- name: Ensure minikube running
+  command: minikube status
+  register: minikube_status
+
+#- name: Fail if minikube not up
+#  fail:
+#    msg: Minikube not up. Please check and proceed
+#  when: minikube_status.rc != 0
+#
+# Create a file directory for k8s templates
+- name: Creates /opt/elk/k8s/ directory
+  become: yes
+  file:
+    path: /opt/elk/k8s
+    state: directory
+
+- name: Ensure Reloader is loaded into the repo
+  become: yes
+  command: kubectl apply -f https://raw.githubusercontent.com/stakater/Reloader/master/deployments/kubernetes/reloader.yaml
+
+- name: register minikube ip
+  command: minikube ip
+  register: minikube_ips
+  
+- name: set minikubeip
+  set_fact:
+    minikube_ip: "{{ minikube_ips.stdout }}"
+  when: minikube_ip is not defined
+

@@ -1,0 +1,4 @@
+---
+filebeat_config:
+    - filebeat_configmap.yml
+    - filebeat_deployment.yml
