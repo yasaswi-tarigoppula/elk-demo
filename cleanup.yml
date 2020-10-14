@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+    - name: Cleanup deployments
+      command: "kubectl delete deployment {{ item }}"
+      with_items:
+        - elasticsearch
+        - kibana
+        - log-manual
+        - logging-app-manual
+      ignore_errors: true
+
