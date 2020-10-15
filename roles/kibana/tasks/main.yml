@@ -1,11 +1,5 @@
 
 ---
-- name: Creates /opt/elk/k8s/ directory
-  become: yes
-  file:
-    path: /opt/elk/k8s
-    state: directory
-
 #copy j2 templates to /opt/elk/k8s/
 - name: Copy deployment j2 template
   become: yes  

@@ -1,10 +1,13 @@
 
 ---
-- name: Creates /opt/elk/k8s/ directory
-  become: yes
-  file:
-    path: /opt/elk/k8s
-    state: directory
+- name: register minikube ip
+  command: minikube ip
+  register: minikube_ips
+
+- name: set minikubeip
+  set_fact:
+    minikube_ip: "{{ minikube_ips.stdout }}"
+  when: minikube_ip is not defined
 
 #copy j2 templates to /opt/elk/k8s/
 - name: Copy deployment j2 template
