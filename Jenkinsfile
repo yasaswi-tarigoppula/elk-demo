@@ -4,6 +4,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'echo "Build Stage"'
+        sh 'ansible-playbook -vv build.yaml --ask-become-pass'
       }
      }
 
@@ -15,7 +16,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'ansible-playbook -vvvv main.yaml --ask-become-pass'
+        sh 'ansible-playbook -vv deploy.yaml --ask-become-pass'
       }
      }
 }

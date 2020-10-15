@@ -3,7 +3,3 @@
   become: yes
   roles:
      - minikube
-     - elastic
-     - logstash
-     - kibana
-     - filebeat
